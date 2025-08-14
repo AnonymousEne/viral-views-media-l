@@ -1,0 +1,12 @@
+{"users": [
+{
+  "index": 1,
+  "localId": "jYPj9IesAceU8qUKF3cBvfkmvbZ2",
+  "email": "down4mine4life@gmail.com",
+  "emailVerified": true,
+  "passwordHash": "vELWoT7vPfgWBIZOqdb/EKq4jxaA0pR+n9SmudbplCzzS8I6zo7reBWi4P3ZY4X9ryyp3/xegwmyMUV/8VSS7w==",
+  "salt": "Z78LYgoYmggGDQ==",
+  "createdAt": "1750790121635",
+  "disabled": false,
+  "providerUserInfo": []
+}]}

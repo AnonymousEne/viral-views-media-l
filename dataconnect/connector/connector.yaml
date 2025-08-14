@@ -1,0 +1,13 @@
+connectorId: default
+generate:
+  javascriptSdk:
+    outputDir: ..\..\functions\dataconnect-generated\js\default-connector
+    package: "@firebasegen/default-connector"
+    packageJsonDir: ..\..\functions
+    react: true
+    angular: true
+
+query:
+  getVideos:
+    statement: |
+      SELECT 1 as id, 'sample' as title;
