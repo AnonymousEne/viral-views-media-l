@@ -1,0 +1,357 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    components.gke.io/layer: addon
+  creationTimestamp: "2025-06-25T09:08:16Z"
+  generation: 2
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:components.gke.io/layer: {}
+        f:labels:
+          f:addonmanager.kubernetes.io/mode: {}
+      f:spec:
+        f:selector: {}
+        f:serviceName: {}
+        f:template:
+          f:metadata:
+            f:annotations:
+              f:cluster-autoscaler.kubernetes.io/safe-to-evict: {}
+              f:components.gke.io/component-name: {}
+              f:components.gke.io/component-version: {}
+            f:labels:
+              f:app: {}
+              f:app.kubernetes.io/name: {}
+              f:app.kubernetes.io/version: {}
+          f:spec:
+            f:affinity:
+              f:nodeAffinity:
+                f:requiredDuringSchedulingIgnoredDuringExecution: {}
+            f:automountServiceAccountToken: {}
+            f:containers:
+              k:{"name":"alertmanager"}:
+                .: {}
+                f:args: {}
+                f:env:
+                  k:{"name":"POD_IP"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      f:fieldRef: {}
+                f:image: {}
+                f:name: {}
+                f:ports:
+                  k:{"containerPort":9093,"protocol":"TCP"}:
+                    .: {}
+                    f:containerPort: {}
+                    f:name: {}
+                f:resources:
+                  f:limits:
+                    f:memory: {}
+                  f:requests:
+                    f:cpu: {}
+                    f:memory: {}
+                f:securityContext:
+                  f:allowPrivilegeEscalation: {}
+                  f:capabilities:
+                    f:drop: {}
+                  f:privileged: {}
+                  f:readOnlyRootFilesystem: {}
+                f:volumeMounts:
+                  k:{"mountPath":"/alertmanager-data"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                  k:{"mountPath":"/alertmanager/config_out"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                    f:readOnly: {}
+              k:{"name":"config-reloader"}:
+                .: {}
+                f:args: {}
+                f:env:
+                  k:{"name":"NODE_NAME"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      f:fieldRef: {}
+                f:image: {}
+                f:name: {}
+                f:ports:
+                  k:{"containerPort":19091,"protocol":"TCP"}:
+                    .: {}
+                    f:containerPort: {}
+                    f:name: {}
+                f:resources:
+                  f:limits:
+                    f:memory: {}
+                  f:requests:
+                    f:cpu: {}
+                    f:memory: {}
+                f:securityContext:
+                  f:allowPrivilegeEscalation: {}
+                  f:capabilities:
+                    f:drop: {}
+                  f:privileged: {}
+                  f:readOnlyRootFilesystem: {}
+                f:volumeMounts:
+                  k:{"mountPath":"/alertmanager"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                    f:readOnly: {}
+                  k:{"mountPath":"/alertmanager/config_out"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+            f:initContainers:
+              k:{"name":"config-init"}:
+                .: {}
+                f:command: {}
+                f:image: {}
+                f:name: {}
+                f:securityContext:
+                  f:allowPrivilegeEscalation: {}
+                  f:capabilities:
+                    f:drop: {}
+                  f:privileged: {}
+                  f:readOnlyRootFilesystem: {}
+                f:volumeMounts:
+                  k:{"mountPath":"/alertmanager/config_out"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+            f:priorityClassName: {}
+            f:securityContext:
+              f:runAsGroup: {}
+              f:runAsNonRoot: {}
+              f:runAsUser: {}
+              f:seccompProfile:
+                f:type: {}
+            f:tolerations: {}
+            f:volumes:
+              k:{"name":"alertmanager-config"}:
+                .: {}
+                f:emptyDir: {}
+                f:name: {}
+              k:{"name":"alertmanager-data"}:
+                .: {}
+                f:emptyDir: {}
+                f:name: {}
+              k:{"name":"config"}:
+                .: {}
+                f:name: {}
+                f:secret:
+                  f:secretName: {}
+    manager: kube-addon-manager
+    operation: Apply
+    time: "2025-06-25T09:08:16Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:collisionCount: {}
+        f:currentRevision: {}
+        f:observedGeneration: {}
+        f:replicas: {}
+        f:updateRevision: {}
+    manager: kube-controller-manager
+    operation: Update
+    subresource: status
+    time: "2025-06-25T10:13:30Z"
+  name: alertmanager
+  namespace: gke-gmp-system
+  resourceVersion: "1750846410446479004"
+  uid: 1ce27d69-7c1b-4758-a467-0c22524ecd8f
+spec:
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  podManagementPolicy: OrderedReady
+  replicas: 0
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: managed-prometheus-alertmanager
+      app.kubernetes.io/name: alertmanager
+  serviceName: alertmanager
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        components.gke.io/component-name: managed-prometheus
+        components.gke.io/component-version: 0.15.3-gke.1
+      creationTimestamp: null
+      labels:
+        app: managed-prometheus-alertmanager
+        app.kubernetes.io/name: alertmanager
+        app.kubernetes.io/version: 0.15.3
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - arm64
+                - amd64
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                - linux
+      automountServiceAccountToken: false
+      containers:
+      - args:
+        - --config.file=/alertmanager/config_out/config.yaml
+        - --storage.path=/alertmanager-data
+        - --cluster.listen-address=[$(POD_IP)]:9094
+        - --web.listen-address=:9093
+        - --log.format=json
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        image: us-west1-artifactregistry.gcr.io/gke-release/gke-release/prometheus-engine/alertmanager:v0.27.0-gmp.3-gke.0@sha256:fc715c21bcf6aace53af0ca77b4dd1f6b67eed1427caeb1f4dd0f9475852316a
+        imagePullPolicy: IfNotPresent
+        name: alertmanager
+        ports:
+        - containerPort: 9093
+          name: alertmanager
+          protocol: TCP
+        resources:
+          limits:
+            memory: 128M
+          requests:
+            cpu: 1m
+            memory: 16M
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - all
+          privileged: false
+          readOnlyRootFilesystem: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /alertmanager/config_out
+          name: alertmanager-config
+          readOnly: true
+        - mountPath: /alertmanager-data
+          name: alertmanager-data
+      - args:
+        - --config-file=/alertmanager/config.yaml
+        - --config-file-output=/alertmanager/config_out/config.yaml
+        - --reload-url=http://127.0.0.1:9093/-/reload
+        - --ready-url=http://127.0.0.1:9093/-/ready
+        - --listen-address=:19091
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        image: us-west1-artifactregistry.gcr.io/gke-release/gke-release/prometheus-engine/config-reloader:v0.15.3-gke.0@sha256:084a78cf04fc50523ba37639d3cac8d33a6a07de5cf641c85b9c9ef71f653d51
+        imagePullPolicy: IfNotPresent
+        name: config-reloader
+        ports:
+        - containerPort: 19091
+          name: cfg-rel-metrics
+          protocol: TCP
+        resources:
+          limits:
+            memory: 32M
+          requests:
+            cpu: 1m
+            memory: 4M
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - all
+          privileged: false
+          readOnlyRootFilesystem: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /alertmanager
+          name: config
+          readOnly: true
+        - mountPath: /alertmanager/config_out
+          name: alertmanager-config
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - 'touch /alertmanager/config_out/config.yaml && echo -e "receivers:\n  -
+          name: noop\nroute:\n  receiver: noop" > alertmanager/config_out/config.yaml'
+        image: us-west1-artifactregistry.gcr.io/gke-release/gke-release/gke-distroless/bash:gke_distroless_20250407.00_p0@sha256:b903ad51976ccd68a817f445c5b6df8bf3655bfd1b30ca989472f7a99f930fc5
+        imagePullPolicy: IfNotPresent
+        name: config-init
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - all
+          privileged: false
+          readOnlyRootFilesystem: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /alertmanager/config_out
+          name: alertmanager-config
+      priorityClassName: gmp-critical
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: arm64
+      - key: components.gke.io/gke-managed-components
+        operator: Exists
+      volumes:
+      - name: config
+        secret:
+          defaultMode: 420
+          secretName: alertmanager
+      - emptyDir: {}
+        name: alertmanager-data
+      - emptyDir: {}
+        name: alertmanager-config
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+status:
+  availableReplicas: 0
+  collisionCount: 0
+  currentRevision: alertmanager-5ccd4bd5f
+  observedGeneration: 2
+  replicas: 0
+  updateRevision: alertmanager-5ccd4bd5f
+
