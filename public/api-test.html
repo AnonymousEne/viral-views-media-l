@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Views - Backend API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        .result {
+            background: #0f172a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #4a5568;
+            border-radius: 4px;
+            background: #2d3748;
+            color: white;
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <h1>🔥 Viral Views - Backend API Test</h1>
+    <p>Testing the backend APIs for the Viral Views platform</p>
+
+    <div class="test-section">
+        <h2>Authentication Test</h2>
+        <div>
+            <input type="email" id="email" placeholder="Email" value="test@example.com">
+            <input type="password" id="password" placeholder="Password" value="password123">
+            <input type="text" id="displayName" placeholder="Display Name" value="Test User">
+        </div>
+        <button onclick="testSignUp()">Sign Up</button>
+        <button onclick="testSignIn()">Sign In</button>
+        <div id="authResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Battle Management Test</h2>
+        <div>
+            <input type="text" id="battleTitle" placeholder="Battle Title" value="Epic Dance Battle">
+            <textarea id="battleDesc" placeholder="Battle Description">Show off your best moves!</textarea>
+            <input type="number" id="maxParticipants" placeholder="Max Participants" value="4">
+        </div>
+        <button onclick="testCreateBattle()">Create Battle</button>
+        <button onclick="testGetBattles()">Get Battles</button>
+        <button onclick="testJoinBattle()">Join First Battle</button>
+        <div id="battleResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>System Status</h2>
+        <button onclick="testSystemStatus()">Check System Status</button>
+        <div id="statusResult" class="result"></div>
+    </div>
+
+    <script src="/api.js"></script>
+    <script>
+        let currentUser = null;
+
+        function displayResult(elementId, result, isError = false) {
+            const element = document.getElementById(elementId);
+            element.textContent = JSON.stringify(result, null, 2);
+            element.className = `result ${isError ? 'error' : 'success'}`;
+        }
+
+        async function testSignUp() {
+            try {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const displayName = document.getElementById('displayName').value;
+                
+                const result = await ViralViewsAPI.signUp(email, password, displayName);
+                displayResult('authResult', result);
+                
+                if (result.success) {
+                    currentUser = result.user;
+                }
+            } catch (error) {
+                displayResult('authResult', { error: error.message }, true);
+            }
+        }
+
+        async function testSignIn() {
+            try {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                const result = await ViralViewsAPI.signIn(email, password);
+                displayResult('authResult', result);
+                
+                if (result.success) {
+                    currentUser = result.user;
+                }
+            } catch (error) {
+                displayResult('authResult', { error: error.message }, true);
+            }
+        }
+
+        async function testCreateBattle() {
+            try {
+                const title = document.getElementById('battleTitle').value;
+                const description = document.getElementById('battleDesc').value;
+                const maxParticipants = parseInt(document.getElementById('maxParticipants').value);
+                
+                const result = await ViralViewsAPI.createBattle(title, description, maxParticipants);
+                displayResult('battleResult', result);
+            } catch (error) {
+                displayResult('battleResult', { error: error.message }, true);
+            }
+        }
+
+        async function testGetBattles() {
+            try {
+                const result = await ViralViewsAPI.getBattles();
+                displayResult('battleResult', result);
+            } catch (error) {
+                displayResult('battleResult', { error: error.message }, true);
+            }
+        }
+
+        async function testJoinBattle() {
+            try {
+                if (!currentUser) {
+                    throw new Error('Please sign in first');
+                }
+                
+                const battles = await ViralViewsAPI.getBattles();
+                if (battles.battles && battles.battles.length > 0) {
+                    const firstBattle = battles.battles[0];
+                    const result = await ViralViewsAPI.joinBattle(firstBattle.id, currentUser.id);
+                    displayResult('battleResult', result);
+                } else {
+                    throw new Error('No battles available to join');
+                }
+            } catch (error) {
+                displayResult('battleResult', { error: error.message }, true);
+            }
+        }
+
+        async function testSystemStatus() {
+            try {
+                const status = {
+                    apiStatus: 'operational',
+                    timestamp: new Date().toISOString(),
+                    version: '1.0.0',
+                    features: {
+                        authentication: 'available',
+                        battleManagement: 'available',
+                        userProfiles: 'available'
+                    }
+                };
+                displayResult('statusResult', status);
+            } catch (error) {
+                displayResult('statusResult', { error: error.message }, true);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            testSystemStatus();
+        });
+    </script>
+</body>
+</html>

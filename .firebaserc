@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "viralviews-m802a",
+    "staging": "viralviews-m802a"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}
