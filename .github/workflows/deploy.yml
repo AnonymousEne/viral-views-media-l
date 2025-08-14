@@ -1,0 +1,48 @@
+# This workflow deploys your Next.js app to Firebase Hosting
+
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main # Triggers the workflow on pushes to the main branch
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest # Use the latest version of Ubuntu
+
+    steps:
+      # Step 1: Check out your repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js for installing dependencies and building
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use Node.js version 20.x
+
+      # Step 3: Set up Python for your Genkit dependencies
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # Or whichever version your project uses
+
+      # Step 4: Install dependencies (both npm and pip)
+      - name: Install Dependencies
+        run: |
+          npm install
+          pip install -r requirements.txt
+
+      # Step 5: Build the Next.js application
+      - name: Build Project
+        run: npm run build
+
+      # Step 6: Deploy to Firebase Hosting
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_VIRAL_VIEWS }}'
+          channelId: live # Deploy to the 'live' production channel
+          projectId: 'viralviews-m802a' # Replace with your actual Firebase Project ID
