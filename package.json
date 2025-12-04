@@ -61,7 +61,7 @@
     "framer-motion": "^11.2.10",
     "genkit": "^1.8.0",
     "lucide-react": "^0.475.0",
-    "next": "15.3.3",
+    "next": "15.5.7",
     "patch-package": "^8.0.0",
     "process": "^0.11.10",
     "rate-limiter-flexible": "^7.2.0",
